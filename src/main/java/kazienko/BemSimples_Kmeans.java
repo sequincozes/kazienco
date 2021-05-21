@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import clusteringComparison.ClusterResults;
 import weka.classifiers.Classifier;
+import weka.clusterers.EM;
+import weka.clusterers.FarthestFirst;
 import weka.clusterers.SimpleKMeans;
 ;
 
@@ -79,7 +81,11 @@ public class BemSimples_Kmeans {
         Parameters.TEST_FILE = Parameters.WSN_CLUSTERING_BLACKHOLE_TEST;
         allInstances = Util.loadAndFilterUnsupervised2021(false);
 //        Instances train, Instances test, Instances trainLabeled, Instances testLabeled
-        ads2021(allInstances[0], allInstances[1], allInstances[2], allInstances[3], 10);
+        System.out.println("KMeans");
+        System.out.println("vp" + ";" + "vn" + ";" + "fp" + ";" + "fn");
+        for (int k = 2; k < 30; k++) {
+            ads2021(allInstances[0], allInstances[1], allInstances[2], allInstances[3], 10);
+        }
     }
 
     private static void oldMethod2019() {
@@ -90,6 +96,7 @@ public class BemSimples_Kmeans {
 
 
     public static void ads2021(Instances train, Instances test, Instances trainLabeled, Instances testLabeled, int k) throws Exception {
+
         if (false) {
             System.out.println("Train: " + train.size() + " instances.");
             System.out.println("Test: " + test.size() + " instances.");
@@ -99,7 +106,9 @@ public class BemSimples_Kmeans {
 
         // Criação do cluster (treino)
         ClusterResults[] results = new ClusterResults[k];
-        SimpleKMeans kmeas = Util.clusterData(train, k);
+        SimpleKMeans kmeas = Util.clusterData(train, k); // Trocar
+//        FarthestFirst kmeas = Util.clusterDataFarthest(train, k); // Trocar
+//        EM kmeas = Util.clusterDataEM(train, k); // Trocar
 
         /* TREINO */
         for (int i = 0; i < k; i++) {
@@ -139,7 +148,7 @@ public class BemSimples_Kmeans {
         // Print
         int vp = 0, vn = 0, fp = 0, fn = 0;
         for (int i = 0; i < k; i++) {
-            if (true) {
+            if (false) {
                 System.out.println("Cluster " + results[i].getClusterNum() + ": " + results[i].getSize() +
                         " (Atk: " + results[i].getAttacks() + ", Nor:" + results[i].getNormals() + ")"
                         + " (Centroid: " + results[i].getCentroidClass() + " / " + "isAnomalous?" + results[i].isAnomalous() + ")"
@@ -154,7 +163,8 @@ public class BemSimples_Kmeans {
             fp = fp + results[i].getFp();
             fn = fn + results[i].getFn();
         }
-        System.out.println(" (VP: " + vp + "|" + " VN: " + vn + "|" + " FP: " + fp + "|" + " FN: " + fn + ")");
+//        System.out.println("K (VP: " + vp + "|" + " VN: " + vn + "|" + " FP: " + fp + "|" + " FN: " + fn + ")");
+        System.out.println(vp + ";" + vn + ";" + fp + ";" + fn);
     }
 
 
