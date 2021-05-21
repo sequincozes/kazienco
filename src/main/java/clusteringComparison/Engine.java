@@ -193,7 +193,10 @@ public class Engine {
         return labeled;
     }
 
-    private static void handleKmeansByCentroid(String description,int parameterK, AbstractClusterer clustered, ClusterResults[] clusterResults) throws Exception {
+    public Engine() {
+    }
+
+    private static void handleKmeansByCentroid(String description, int parameterK, AbstractClusterer clustered, ClusterResults[] clusterResults) throws Exception {
         SimpleKMeans kmeans = (SimpleKMeans) clustered;
           
         for (int eachK = 0; eachK < parameterK; eachK++) { 
@@ -204,7 +207,7 @@ public class Engine {
             clusterResults[eachK] = new ClusterResults();
             clusterResults[eachK].setClusterNum(eachK);
             try{
-                clusterResults[eachK].setClusterClass(centroidClasses[eachK]);
+                clusterResults[eachK].setCentroidClass(centroidClasses[eachK]);
             } catch (java.lang.ArrayIndexOutOfBoundsException e){
                 break;
             }
@@ -235,7 +238,7 @@ public class Engine {
 
             if(output == Output.DETAILED){          
                 System.out.println("Cluster "+clusterResults[eachK].getClusterNum()+";"
-                    +clusterResults[eachK].getClusterClass() + ";"
+                    +clusterResults[eachK].getCentroidClass() + ";"
                     +clusterResults[eachK].getVp()+";"
                     +clusterResults[eachK].getVn()+";"
                     +clusterResults[eachK].getFp()+";"
@@ -306,7 +309,7 @@ public class Engine {
         for (int instanciaIndex = 0; instanciaIndex < test.size(); instanciaIndex++){
             int k = clustered.clusterInstance(test.get(instanciaIndex));   
             //System.out.println("Cluster "+k+", classe do cluster: "+clusterResults[k].clusterClass+", normal: "+normalClass+", classe da inst:"+labeled.get(instanciaIndex).classValue());
-            if (clusterResults[k].clusterClass == normalClass){
+            if (clusterResults[k].getCentroidClass() == normalClass){
                 if(labeled.get(instanciaIndex).classValue() == normalClass){            
                     clusterResults[k].addVn();
                 } else{
@@ -324,7 +327,7 @@ public class Engine {
          if(output == Output.DETAILED){          
                 for (int eachK = 0; eachK < clusterResults.length; eachK++){
                     System.out.println("Cluster "+clusterResults[eachK].getClusterNum()+";"
-                        +clusterResults[eachK].getClusterClass() + ";"
+                        +clusterResults[eachK].getCentroidClass() + ";"
                         +clusterResults[eachK].getVp()+";"
                         +clusterResults[eachK].getVn()+";"
                         +clusterResults[eachK].getFp()+";"

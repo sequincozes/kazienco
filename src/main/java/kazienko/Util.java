@@ -150,6 +150,36 @@ public class Util {
 
     }
 
+    public static Instances[] loadAndFilterUnsupervised2021(boolean printSelection) throws Exception {
+
+        Instances trainInstances = new Instances(Util.readDataFile(Parameters.TRAIN_FILE));
+        Instances trainInstancesLabeled = new Instances(trainInstances);
+        Instances testInstances = new Instances(Util.readDataFile(Parameters.TEST_FILE));
+        Instances testInstancesLabeled = new Instances(testInstances);
+
+
+
+        if (Parameters.FEATURE_SELECTION.length > 0) {
+            trainInstances = Util.applyFilterKeep(trainInstances);
+            testInstances = Util.applyFilterKeep(testInstances);
+            if (printSelection) {
+                System.out.print(Arrays.toString(Parameters.FEATURE_SELECTION) + " - ");
+                System.out.println("trainInstances: " + trainInstances.numAttributes());
+                System.out.print("testInstances: " + testInstances.numAttributes());
+            }
+            trainInstancesLabeled.setClassIndex(trainInstancesLabeled.numAttributes() - 1);
+            testInstancesLabeled.setClassIndex(trainInstancesLabeled.numAttributes() - 1);
+
+        }
+
+        /* Não-Supervisionado: K-Means */
+        trainInstances.deleteAttributeAt(trainInstances.numAttributes() - 1); // Remove classe
+        testInstances.deleteAttributeAt(testInstances.numAttributes() - 1); // Remove classe
+
+        return new Instances[]{trainInstances, testInstances, trainInstancesLabeled, testInstancesLabeled};
+
+    }
+
     public static SimpleKMeans clusterData(Instances evaluation, int k) throws Exception {
         SimpleKMeans kmeans = new SimpleKMeans();
         kmeans.setSeed(k);

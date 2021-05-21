@@ -6,6 +6,8 @@
 package kazienko;
 
 import java.util.ArrayList;
+
+import clusteringComparison.ClusterResults;
 import weka.classifiers.Classifier;
 import weka.clusterers.SimpleKMeans;
 ;
@@ -60,7 +62,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 /**
- * @author silvio
+ * @author silvio'
  */
 
 
@@ -72,17 +74,97 @@ public class BemSimples_Kmeans {
     static boolean debug = false;
 
     public static void main(String[] args) throws Exception {
-        allInstances = Util.loadAndFilterUnsupervised(false);
-//        Instances[]{trainInstances, normalInstances, testInstances, trainInstancesLabeled};
-        ads(allInstances[0], allInstances[1], allInstances[2], allInstances[3]);
+//        oldMethod2019();
+        Parameters.TRAIN_FILE = Parameters.WSN_CLUSTERING_BLACKHOLE_TRAIN;
+        Parameters.TEST_FILE = Parameters.WSN_CLUSTERING_BLACKHOLE_TEST;
+        allInstances = Util.loadAndFilterUnsupervised2021(false);
+//        Instances train, Instances test, Instances trainLabeled, Instances testLabeled
+        ads2021(allInstances[0], allInstances[1], allInstances[2], allInstances[3], 10);
     }
+
+    private static void oldMethod2019() {
+//                allInstances = Util.loadAndFilterUnsupervised(false);
+//        Instances[]{trainInstances, normalInstances, testInstances, trainInstancesLabeled};
+//        ads(allInstances[0], allInstances[1], allInstances[2], allInstances[3]);
+    }
+
+
+    public static void ads2021(Instances train, Instances test, Instances trainLabeled, Instances testLabeled, int k) throws Exception {
+        if (false) {
+            System.out.println("Train: " + train.size() + " instances.");
+            System.out.println("Test: " + test.size() + " instances.");
+            System.out.println("Train Labeled: " + trainLabeled.size() + " instances.");
+            System.out.println("Test Labeled: " + testLabeled.size() + " instances.");
+        }
+
+        // Criação do cluster (treino)
+        ClusterResults[] results = new ClusterResults[k];
+        SimpleKMeans kmeas = Util.clusterData(train, k);
+
+        /* TREINO */
+        for (int i = 0; i < k; i++) {
+            results[i] = new ClusterResults();
+        }
+
+//        System.out.println(" ** TRAIN ** ");
+        for (int i = 0; i < train.numInstances(); i++) {
+//            System.out.println(i + "-" + labeled.instance(i).classValue() + " = " + labeled.instance(i).toString());
+            int clusterNum = kmeas.clusterInstance(train.instance(i));
+            if (trainLabeled.instance(i).classValue() > 0) {
+                results[clusterNum].addAttack(); // Suponha que >0 é ataque (1)
+            } else {
+                results[clusterNum].addNormal(); // Suponha que zero é normal
+            }
+        }
+
+//        System.out.println(" ** TEST ** ");
+        for (int i = 0; i < test.numInstances(); i++) {
+//            System.out.println(i + "-" + labeled.instance(i).classValue() + " = " + labeled.instance(i).toString());
+            int clusterNum = kmeas.clusterInstance(train.instance(i));
+            if (results[clusterNum].isAnomalous()) {
+                if (testLabeled.instance(i).classValue() > 0) {
+                    results[clusterNum].addVp(); // Attack clustered as anomaly
+                } else {
+                    results[clusterNum].addFp(); // Normal clustered as anomaly
+                }
+            } else {
+                if (testLabeled.instance(i).classValue() > 0) {
+                    results[clusterNum].addFn(); // Attack clustered as Normal
+                } else {
+                    results[clusterNum].addVn(); // Normal clustered as Normal
+                }
+            }
+        }
+
+        // Print
+        int vp = 0, vn = 0, fp = 0, fn = 0;
+        for (int i = 0; i < k; i++) {
+            if (true) {
+                System.out.println("Cluster " + results[i].getClusterNum() + ": " + results[i].getSize() +
+                        " (Atk: " + results[i].getAttacks() + ", Nor:" + results[i].getNormals() + ")"
+                        + " (Centroid: " + results[i].getCentroidClass() + " / " + "isAnomalous?" + results[i].isAnomalous() + ")"
+                        + " (VP: " + results[i].getVp() + "|"
+                        + " VN: " + results[i].getVn() + "|"
+                        + " FP: " + results[i].getFp() + "|"
+                        + " FN: " + results[i].getFn() + ")");
+            }
+
+            vp = vp + results[i].getVp();
+            vn = vn + results[i].getVn();
+            fp = fp + results[i].getFp();
+            fn = fn + results[i].getFn();
+        }
+        System.out.println(" (VP: " + vp + "|" + " VN: " + vn + "|" + " FP: " + fp + "|" + " FN: " + fn + ")");
+    }
+
 
     public static void ads(Instances treino, Instances testeNormal, Instances teste, Instances labeled) throws Exception {
         System.out.println("Treino: " + treino.size() + " instâncias.");
         System.out.println("Teste Normal: " + testeNormal.size() + " instâncias.");
         System.out.println("Teste Ataque: " + teste.size() + " instâncias.");
         System.out.println("Treino Label: " + labeled.size() + " instâncias.");
-// Criação do cluster (treino)
+
+        // Criação do cluster (treino)
         int k = 5;
         int[][] results = new int[k][3];
         SimpleKMeans farthest = Util.clusterData(treino, k);
@@ -108,7 +190,6 @@ public class BemSimples_Kmeans {
         }
         for (int i = 0; i < k; i++) {
             System.out.println("Cluster " + i + "; " + results[i][0] + ";" + results[i][1] + ";" + results[i][2]);
-
         }
 
         /* TESTE */
@@ -124,13 +205,13 @@ public class BemSimples_Kmeans {
             //Remover esse for até 3 (ERA SÓ PRA CALCULAR TEMPO)
 //            for (int temp = 0; temp < 3; temp++) {
 
-                for (int i = 0; i < teste.numInstances(); i++) {
-                    long timeBefore = System.nanoTime();
-                    int clusterNum = farthest.clusterInstance(teste.instance(i));
-                    long timeAfter = System.nanoTime();
-                    System.out.println(timeAfter - timeBefore);
-                    results[clusterNum][0] = results[clusterNum][0] + 1;
-                }
+            for (int i = 0; i < teste.numInstances(); i++) {
+                long timeBefore = System.nanoTime();
+                int clusterNum = farthest.clusterInstance(teste.instance(i));
+                long timeAfter = System.nanoTime();
+                System.out.println(timeAfter - timeBefore);
+                results[clusterNum][0] = results[clusterNum][0] + 1;
+            }
 //            }
             for (int i = 0; i < k; i++) {
                 System.out.println("Cluster " + i + "; " + results[i][0]);// ";" + results[i][1] + ";" + results[i][2]);

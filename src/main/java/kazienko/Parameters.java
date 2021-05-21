@@ -24,11 +24,18 @@ public class Parameters {
 
     public static String ataquePath = DIRETORIO + ATAQUE + "/";
 
+    public static String WSN_CLUSTERING_FLOODING_TEST = "/home/silvio/datasets/wsn-ds/clustering2021/normal_flooding_20percent_test.csv";
+    public static String WSN_CLUSTERING_GRAYHOLE_TEST = "/home/silvio/datasets/wsn-ds/clustering2021/normal_grayhole_20percent_test.csv";
+    public static String WSN_CLUSTERING_BLACKHOLE_TEST = "/home/silvio/datasets/wsn-ds/clustering2021/normal_blackhole_20percent_test.csv";
+    public static String WSN_CLUSTERING_FLOODING_TRAIN = "/home/silvio/datasets/wsn-ds/clustering2021/normal_flooding_80percent_train.csv";
+    public static String WSN_CLUSTERING_GRAYHOLE_TRAIN = "/home/silvio/datasets/wsn-ds/clustering2021/normal_grayhole_80percent_train.csv";
+    public static String WSN_CLUSTERING_BLACKHOLE_TRAIN = "/home/silvio/datasets/wsn-ds/clustering2021/normal_blackhole_80percent_train.csv";
+
+
     public static final String SEPARATOR = "/";
 //    public static final String FILE_TRAIN = DIRETORIO + SEPARATOR + "10_train_files" + SEPARATOR + "compilado_train.csv"; //treino_binario_1000_1000
 //    public static final String FILE_EVALUATION = DIRETORIO + SEPARATOR + "10_evaluation_files" + SEPARATOR + "compilado_evaluation.csv"; //ataque_binario_10k
 //    public static final String FILE_TEST = DIRETORIO + SEPARATOR + "80_test_files" + SEPARATOR + "compilado_test.csv"; //ataque_binario_10k
-
     static String TRAIN_FILE = ataquePath + "train_5.csv";
     static String TEST_FILE = ataquePath + "test_95.csv";
     static String NORMAL_FILE = ataquePath + "normal_test_95.csv";
