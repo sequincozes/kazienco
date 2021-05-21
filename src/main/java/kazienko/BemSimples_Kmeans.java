@@ -84,7 +84,7 @@ public class BemSimples_Kmeans {
         System.out.println("KMeans");
         System.out.println("vp" + ";" + "vn" + ";" + "fp" + ";" + "fn");
         for (int k = 2; k < 30; k++) {
-            ads2021(allInstances[0], allInstances[1], allInstances[2], allInstances[3], 10);
+            ads2021(allInstances[0], allInstances[1], allInstances[2], allInstances[3], k);
         }
     }
 
@@ -164,7 +164,7 @@ public class BemSimples_Kmeans {
             fn = fn + results[i].getFn();
         }
 //        System.out.println("K (VP: " + vp + "|" + " VN: " + vn + "|" + " FP: " + fp + "|" + " FN: " + fn + ")");
-        System.out.println(vp + ";" + vn + ";" + fp + ";" + fn);
+        System.out.println(k + ";"+vp + ";" + vn + ";" + fp + ";" + fn);
     }
 
 
