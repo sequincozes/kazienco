@@ -19,7 +19,22 @@ import weka.classifiers.trees.RandomTree;
  */
 public class Parameters {
 
-    public static final String DIRETORIO = "/home/silvio/datasets/wsn-ds/";
+    public static String FS_NAME = "";
+    public static  String FOLD1 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-0.csv";
+    public static  String FOLD2 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-1.csv";
+    public static  String FOLD3 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-2.csv";
+    public static  String FOLD4 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-3.csv";
+    public static  String FOLD5 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-4.csv";
+    public static  String DIRETORIO = "/home/silvio/datasets/wsn-ds/";
+
+
+    public static String CLUSTER_KMEANS = "KMEANS";
+    public static String CLUSTER_FF = "FF";
+    public static String CLUSTER_EM = "EM";
+
+    public static String CLUSTER_ALGORITHM = "KMEANS";
+    public static boolean BALANCE = false;
+    public static String DATASET = "";
     public static String ATAQUE = "flooding";
 
     public static String ataquePath = DIRETORIO + ATAQUE + "/";
@@ -52,7 +67,7 @@ public class Parameters {
     public static final boolean TEST_NORMALS = true;
     public static final boolean TEST_ATTACKS = true;
     public static final int TOTAL_FEATURES = 19;
-    public static final boolean NORMALIZE = false;
+    public static  boolean NORMALIZE = false;
 
     //Selected by GR
 //    static int[] FEATURE_SELECTION = new int[]{53, 5, 64, 40, 7, 70, 9, 54, 41, 42, 43, 67, 35, 49, 6, 66, 13, 55, 11, 1};

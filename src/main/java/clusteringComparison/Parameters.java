@@ -46,7 +46,7 @@ public class Parameters {
     public static final boolean TEST_NORMALS = true;
     public static final boolean TEST_ATTACKS = true;
     public static final int TOTAL_FEATURES = 19;
-    public static boolean NORMALIZE = false;
+    public static boolean NORMALIZE = true;
 
     //Selected by GR
 //    static int[] FEATURE_SELECTION = new int[]{53, 5, 64, 40, 7, 70, 9, 54, 41, 42, 43, 67, 35, 49, 6, 66, 13, 55, 11, 1};

@@ -9,9 +9,9 @@ package clusteringComparison;
  * @author silvio
  */
 public class ClusterResults {
-    enum CRITERIA {CENTROID_CLASS, MAJORITARY_CLASS}
+    enum CRITERIA {CENTROID_CLASS, MAJORITARY_CLASS, WEIGHTED_CLASS}
 
-    public static CRITERIA anomalyCriteria = CRITERIA.MAJORITARY_CLASS;
+    public static CRITERIA anomalyCriteria = CRITERIA.WEIGHTED_CLASS;
 
     public double getCentroidClass() {
         return centroidClass;
@@ -26,8 +26,11 @@ public class ClusterResults {
     public boolean isAnomalous() {
         if (anomalyCriteria == CRITERIA.MAJORITARY_CLASS) {
             return attacks >= normals;
-        } else {
+        } else if (anomalyCriteria == CRITERIA.CENTROID_CLASS) {
             return centroidClass>0;
+        } else {
+//            System.out.println((Float.valueOf(attacks)/2017)+" >= "+(Float.valueOf(normals)/67953));
+            return (Float.valueOf(attacks)/2017) >= (Float.valueOf(normals)/67953);
         }
     }
 
