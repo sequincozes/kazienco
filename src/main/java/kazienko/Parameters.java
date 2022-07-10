@@ -19,13 +19,15 @@ import weka.classifiers.trees.RandomTree;
  */
 public class Parameters {
 
+    public static int K = 0;
     public static String FS_NAME = "";
-    public static  String FOLD1 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-0.csv";
-    public static  String FOLD2 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-1.csv";
-    public static  String FOLD3 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-2.csv";
-    public static  String FOLD4 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-3.csv";
-    public static  String FOLD5 = "/home/silvio/datasets/wsn-ds/clustering2021/folds/normal_blackhole_5folds-4.csv";
-    public static  String DIRETORIO = "/home/silvio/datasets/wsn-ds/";
+    public static  String FOLD1 = "/home/silvio/IdeaProjects/kazienco/datasets/clustering2021/folds/normal_blackhole_5folds-0.csv";
+    public static  String FOLD2 = "/home/silvio/IdeaProjects/kazienco/datasets/clustering2021/folds/normal_blackhole_5folds-1.csv";
+    public static  String FOLD3 = "/home/silvio/IdeaProjects/kazienco/datasets/clustering2021/folds/normal_blackhole_5folds-2.csv";
+
+    public static  String FOLD4 = "/home/silvio/IdeaProjects/kazienco/datasets/clustering2021/folds/normal_blackhole_5folds-3.csv";
+    public static  String FOLD5 = "/home/silvio/IdeaProjects/kazienco/datasets/clustering2021/folds/normal_blackhole_5folds-4.csv";
+    public static  String DIRETORIO = "/home/silvio/IdeaProjects/kazienco/datasets/";
 
 
     public static String CLUSTER_KMEANS = "KMEANS";
